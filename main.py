@@ -1,7 +1,8 @@
 # Example file showing a basic pygame "game loop"
 import pygame
+from game import game_loop, inicializa
 
-# pygame setup
+"""# pygame setup
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
@@ -24,4 +25,7 @@ while running:
 
     clock.tick(60)  # limits FPS to 60
 
-pygame.quit()
+pygame.quit()"""
+
+if __name__ == '__main__':
+    game_loop(*inicializa())
