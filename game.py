@@ -1,9 +1,13 @@
+import pygame
+
 def inicializa():
     """
     Inicializa todas as informações e objetos do jogo.
     """
 
     pygame.init()
+
+    config = ""
 
     asset = {
         **config.asset,
@@ -14,6 +18,9 @@ def inicializa():
         'objs' : {},
         'personagens' : {},
     }
+
+    window = pygame.display.set_mode(tuple(asset['tam_tela']), vsync=asset['vsync'], flags=pygame.SCALED)
+    pygame.display.set_caption('Casino Nights')
 
     state = {
         'tela_jogo' : 'inicio',
