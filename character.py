@@ -1,5 +1,7 @@
 import pygame
 
+# -----------------------------------------------------------------------------------------------------------------------
+#                                                 V papo de animação V
 
 animation_db = {}
 
@@ -43,14 +45,8 @@ def load_animations():
                     animation_db[e_type][state].append(sprite)
 
 
-    
-    
-
-load_animations()
-
-
-
-
+# -----------------------------------------------------------------------------------------------------------------------
+#                                           V Colisãao de objetos V
 
 def intersec_rect_rect(rect1, rect2):
     return rect1.colliderect(rect2)
@@ -62,6 +58,7 @@ def intersec_circ_rect(circ, rect):
     return True
 def intersec_circ_circ(circ1, circ2):
     return (((circ1.center[0]-circ2.center[0])**2 + (circ1.center[1]-circ2.center[1])**2)**0.5) <= circ1.rad + circ2.rad
+
 
 def colide(objeto, lista_objs):
     colisoes = []
@@ -99,6 +96,8 @@ def colide(objeto, lista_objs):
                         colisoes.remove(obj_comp)
     return colisoes
 
+# ------------------------------------------------------------------------------------------------------------------------
+
 class entidade(object):
     def __init__(self, x, y, width, height, collide_method, obj_list, e_type):
 
@@ -119,24 +118,26 @@ class entidade(object):
         self.collide_list = []
         self.obj = obj(x, y, self.width, self.height, collide_method, obj_list)
 
-        self.action = "idle"
+        self.action = set_action("idle")
+        self.skin = 1
 
         pass
 
+
+    def change_skin(self, new_skin):
+        if self.type == "pombo" and new_skin in range(1,10):
+            self.skin = new_skin
+    
     def set_action(self, action):
+        self.frame = 0
         self.action = action
 
-    # def set_frame(self, frame):
-
-        
-
-
-
-    
+    # def set_frame(self, frame): 
 class circ():
     def __init__(self, rad, center):
         self.rad = rad
         self.center = center
+
 class obj(object):
 
     def __init__(self, x, y, width, height, collide_method, obj_list):
