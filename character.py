@@ -99,7 +99,7 @@ def colide(objeto, lista_objs):
 # ------------------------------------------------------------------------------------------------------------------------
 
 class entidade(object):
-    def __init__(self, x, y, width, height, collide_method, obj_list, e_type):
+    def __init__(self, x, y, width, height, collide_method, e_type):
 
         valid = {"rect", "circle"}
         if collide_method not in valid:
@@ -116,9 +116,9 @@ class entidade(object):
         self.rotation = 0
         self.state = 0
         self.collide_list = []
-        self.obj = obj(x, y, self.width, self.height, collide_method, obj_list)
+        self.obj = obj(x, y, self.width, self.height, collide_method)
 
-        self.action = set_action("idle")
+        self.action = self.set_action("idle")
         self.skin = 1
 
         pass
@@ -131,6 +131,13 @@ class entidade(object):
     def set_action(self, action):
         self.frame = 0
         self.action = action
+    
+    def move(self, new_x, new_y):
+        self.x = new_x
+        self.y = new_y
+        self.obj.update(new_x, new_y)
+    
+
 
     # def set_frame(self, frame): 
 class circ():
@@ -140,7 +147,7 @@ class circ():
 
 class obj(object):
 
-    def __init__(self, x, y, width, height, collide_method, obj_list):
+    def __init__(self, x, y, width, height, collide_method):
         valid = {"rect", "circle"}
         if collide_method not in valid:
             raise ValueError("results: status must be one of %r." % valid)
@@ -150,29 +157,14 @@ class obj(object):
         self.y = y
         self.width = width
         self.height = height
+        self.update()
 
-        self.rad = width/2
-        self.center = [self.x+(self.width/2), self.y+(self.height/2)]
-        self.corner = [x+width, y+height]
-
+    def update(self, x, y):
+        self.rad = self.width/2
+        self.center = [self.x+(self.self.width/2), self.y+(self.height/2)]
+        self.corner = [x+self.width, y+self.height]
         self.circle = circ(self.rad, self.center)
-        self.rect = pygame.Rect(x, y, width, height)
-
-        obj_list.append(self)
-
-    def move(self, new_x, new_y, obj_list):
-        id_obj = obj_list.index(self)
-
-        self.x, self.y = (new_x, new_y)
-        self.center = [self.x+(self.width/2), self.y+(self.height/2)]
-        self.corner = [self.x+self.width, self.y+self.height]
-        self.rect.x, self.rect.y = (new_x, new_y)
-        self.circle.center = self.center
-
-        obj_list[id_obj] = self
-
-
-        
+        self.rect = pygame.Rect(x, y, self.width, self.height)        
 
 
     def asdict(self):
