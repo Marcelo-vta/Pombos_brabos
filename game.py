@@ -1,5 +1,5 @@
 import pygame, sys
-from character import entidade, colide
+from character import Entidade, colide
 
 class fase1():
     def __init__(self, window, assets):

@@ -50,12 +50,16 @@ def load_animations():
 
 def intersec_rect_rect(rect1, rect2):
     return rect1.colliderect(rect2)
+
+
 def intersec_circ_rect(circ, rect):
     if not (circ.center[0] <= rect.x + rect.width + circ.rad and circ.center[0] >= rect.x - circ.rad):
         return False
     if not (circ.center[1] <= rect.y + rect.height + circ.rad and circ.center[1] >= rect.y - circ.rad):
         return False
     return True
+
+
 def intersec_circ_circ(circ1, circ2):
     return (((circ1.center[0]-circ2.center[0])**2 + (circ1.center[1]-circ2.center[1])**2)**0.5) <= circ1.rad + circ2.rad
 
@@ -98,9 +102,8 @@ def colide(objeto, lista_objs):
 
 # ------------------------------------------------------------------------------------------------------------------------
 
-class entidade(object):
+class Entidade(object):
     def __init__(self, x, y, width, height, collide_method, obj_list, e_type):
-
         valid = {"rect", "circle"}
         if collide_method not in valid:
             raise ValueError("results: status must be one of %r." % valid)
@@ -116,7 +119,7 @@ class entidade(object):
         self.rotation = 0
         self.state = 0
         self.collide_list = []
-        self.obj = obj(x, y, self.width, self.height, collide_method, obj_list)
+        self.obj = Obj(x, y, self.width, self.height, collide_method, obj_list)
 
         self.action = set_action("idle")
         self.skin = 1
@@ -133,12 +136,12 @@ class entidade(object):
         self.action = action
 
     # def set_frame(self, frame): 
-class circ():
+class Circ():
     def __init__(self, rad, center):
         self.rad = rad
         self.center = center
 
-class obj(object):
+class Obj(object):
 
     def __init__(self, x, y, width, height, collide_method, obj_list):
         valid = {"rect", "circle"}
@@ -155,7 +158,7 @@ class obj(object):
         self.center = [self.x+(self.width/2), self.y+(self.height/2)]
         self.corner = [x+width, y+height]
 
-        self.circle = circ(self.rad, self.center)
+        self.circle = Circ(self.rad, self.center)
         self.rect = pygame.Rect(x, y, width, height)
 
         obj_list.append(self)
