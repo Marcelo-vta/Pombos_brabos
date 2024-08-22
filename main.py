@@ -1,8 +1,8 @@
 # Example file showing a basic pygame "game loop"
 import pygame
-from game import fase1, menu
+from game import menu
 from load_assets import load_assets
-from character import load_animations
+from character import load_animations, anim_db
 
 """# pygame setup
 pygame.init()
@@ -34,6 +34,7 @@ if __name__ == '__main__':
 
     window = pygame.display.set_mode((1900, 1080), pygame.FULLSCREEN)
     load_animations()
+    anim_db()
 
     jogo = menu(window)
     while True:

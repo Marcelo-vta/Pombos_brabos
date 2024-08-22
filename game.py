@@ -1,5 +1,5 @@
 import pygame, sys
-from character import Entidade, colide
+from character import entidade, colide
 
 class fase1():
     def __init__(self, window, assets):
@@ -22,7 +22,7 @@ class fase1():
 
         self.clock = pygame.time.Clock()
 
-        background = pygame.image.load(r"Pombos_brabos\assets\Title_Image_Day.png")
+        background = pygame.image.load(r"assets\Title_Image_Day.png")
         background = pygame.transform.scale(background, self.window.get_size)
 
         self.window.fill("grey")
@@ -81,10 +81,16 @@ class menu():
 
         self.clock = pygame.time.Clock()
 
-        background = pygame.image.load(r"Pombos_brabos\assets\Title_Image_Day.png")
+        background = pygame.image.load(r"assets\Title_Image_Day.png")
         self.background = pygame.transform.scale(background, self.window.get_size())
         
         self.window.fill("grey")
+
+        self.butao = entidade(0,0,10,10,"rect","pombo")
+        
+        pygame.font.init() # you have to call this at the start, 
+                   # if you want to use this module.
+        self.my_font = pygame.font.SysFont('Comic Sans MS', 30)
 
 
         pass
@@ -93,18 +99,30 @@ class menu():
         #     V eventos V
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
+        if mouse_x in range(0,100):
+            self.butao.set_action("hover")
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    self.butao.set_action("sitting")
+                if event.button == 3:
+                    self.butao.skin += 1
 
         # -------------------- 
 
         # V geracao de imagens V
+        text_surface = self.my_font.render(str(self.butao.frame), False, "black")
 
         self.window.blit(self.background, (0,0))
+        self.butao.blit(self.window)
+        self.window.blit(text_surface, (100,100))
+        # pygame.draw.rect(self.window, "red", self.butao.obj.rect )
 
-        self.window.blit(self.assets["title"], (self.window.get_width()/2 - self.assets["title"].get_width()/2, self.window.get_height()/4 - self.assets["title"].get_height()/2))
+
 
         # --------------------
 
