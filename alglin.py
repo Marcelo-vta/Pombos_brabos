@@ -1,14 +1,24 @@
 import numpy as np
 from consts import const_G
 
-def vetor_direcao(pos_inicial, pos_final):
+def vetor_direcao(pos_inicial, pos_final = None):
     """
     Direção do vetor entre pos_inicial (normalmente posição do personagem) e pos_final (normalmente direção do mouse).
 
     Retorna: Vetor normalizado
     """
-    v = pos_final - pos_inicial
+    v = pos_final - pos_inicial if pos_final != None else pos_inicial
     return np.array((1/np.linalg.norm(v)) * v)
+
+
+def calcula_angulo(vetor):
+    """
+    Calcula ângulo entre o eixo x e o vetor.
+
+    Retorna: Ângulo em radianos.
+    """
+    vec_x = np.array([1, 0])
+    return np.arccos((vetor_direcao(vetor) @ vec_x))
 
 
 def dist(pos_corpo, pos_personagem):
