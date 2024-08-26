@@ -7,7 +7,7 @@ def vetor_direcao(pos_inicial, pos_final = None):
 
     Retorna: Vetor normalizado
     """
-    v = pos_final - pos_inicial if pos_final != None else pos_inicial
+    v = pos_final - pos_inicial if pos_final.any() != None else pos_inicial
     return np.array((1/np.linalg.norm(v)) * v)
 
 
@@ -25,7 +25,7 @@ def dist(pos_corpo, pos_personagem):
     """
     A distância deve ser calculada com as posições do centro de cada corpo.
     """
-    return np.sqrt((pos_corpo[0] - pos_personagem[0])*2 + (pos_corpo[1] - pos_personagem[1])*2)
+    return ((pos_corpo[0] - pos_personagem[0])**2 + (pos_corpo[1] - pos_personagem[1])**2)**0.5
 
 
 def forca_g(pos_corpo, pos_personagem, m_corpo, m_personagem):

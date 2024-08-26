@@ -1,4 +1,6 @@
 import pygame
+import numpy as np
+from alglin import *
 
 # -----------------------------------------------------------------------------------------------------------------------
 #                                                 V papo de animação V
@@ -18,6 +20,7 @@ def load_animations():
 
     for inf in animations:
         e_type = inf[0].split("/")[0]
+        print(inf)
         frames = [int(i) for i in inf[1].split(";")]
         state = inf[0].split('/')[1]
         endcode = inf[4]
@@ -27,21 +30,21 @@ def load_animations():
             animation_db[e_type] = {}
         if e_type == "pombo":
             state = inf[0].split('/')[2]
-            for i in range(1,10):
+            for i in range(9):
                 if str(i) not in animation_db[e_type]:
                     animation_db[e_type][str(i)] = {}
                 animation_db[e_type][str(i)][state] = []
                 for j in range(len(frames)):
-                    for _ in range(1, frames[j]+1):
-                        sprite = pygame.image.load(f"{assets_path}{e_type}/{str(i)}/{state}/{str(j+1)}{endcode}")
+                    for _ in range(frames[j]):
+                        sprite = pygame.image.load(f"{assets_path}{e_type}/{str(i)}/{state}/{str(j)}{endcode}")
                         sprite = pygame.transform.scale_by(sprite, float(scale))
                         animation_db[e_type][str(i)][state].append(sprite)
         else:
             animation_db[e_type][inf[0].split("/")[1]] = []
             for j in range(len(frames)):
-                for _ in range(1, frames[j]+1):
-                    sprite = pygame.image.load(f"{assets_path}{e_type}/{state}/{str(j+1)}{endcode}")
-                    pygame.transform.scale_by(sprite, float(scale))
+                for _ in range(frames[j]):
+                    sprite = pygame.image.load(f"{assets_path}{e_type}/{state}/{str(j)}{endcode}")
+                    sprite = pygame.transform.scale_by(sprite, float(scale))
                     animation_db[e_type][state].append(sprite)
 
 def anim_db():
@@ -101,7 +104,9 @@ def colide(objeto, lista_objs):
 # ------------------------------------------------------------------------------------------------------------------------
 
 class entidade(object):
-    def __init__(self, x, y, width, height, collide_method, e_type):
+    def __init__(self, x, y, width, height, collide_method, e_type, scale=1):
+
+        self.scale = scale
 
         valid = {"rect", "circle"}
         if collide_method not in valid:
@@ -112,7 +117,8 @@ class entidade(object):
         self.width = width
         self.height = height
         self.collide_method = collide_method
-
+        self.vel = np.array([0.0,0.0])
+        self.accel = np.array([0.0,0.0])
         self.type = e_type
 
         self.rotation = 0
@@ -123,7 +129,12 @@ class entidade(object):
         self.action = "idle"
         self.frame = 0
         self.set_action("idle")
-        self.skin = 1
+        self.skin = 0
+
+        self.inverted = False
+
+        self.advance_frame(True)
+        self.hovered = False
 
         pass
 
@@ -139,14 +150,49 @@ class entidade(object):
     def set_frame(self, new_frame):
         self.frame = new_frame % len(self.find_sequence())
     
-    def advance_frame(self):
+    def advance_frame(self, changed=False):
+        sequence = self.find_sequence()
         self.frame += 1
-        if self.frame >= len(self.find_sequence()):
+
+        if self.frame >= len(sequence):
             self.frame = 0
 
-    def change_skin(self, new_skin):
-        if self.type == "pombo" and new_skin in range(1,10):
-            self.skin = new_skin
+        frame = sequence[self.frame]
+        frame = pygame.transform.scale_by(frame, self.scale)
+
+        if frame.get_width != self.width:
+            self.width = frame.get_width()
+            changed = True
+
+        if frame.get_height != self.height:
+            self.height = frame.get_height()
+            changed = True
+
+        if changed:
+            self.obj.dimensions(self.width, self.height)
+
+    def center(self, res, offset = [0,0]):
+        self.move((res[0]/2)-(self.width/2)-(res[0]*offset[0]), (res[1]/2)-(self.height/2)-(res[1]*offset[1]))
+
+    def change_skin(self, new_skin=0, inc=False, dec=False):
+        if self.type == "pombo":
+            if inc:
+                if self.skin == 8:
+                    self.skin = 0
+                else:
+                    self.skin += 1
+                return
+
+            if dec:
+                if self.skin == 0:
+                    self.skin = 8
+                else:
+                    self.skin -= 1
+                return
+
+            if new_skin in range(0,9):
+                self.skin = new_skin
+                return
     
     def set_action(self, action):
         if self.action != action:
@@ -160,8 +206,19 @@ class entidade(object):
 
     def blit(self, window):
         sequence = self.find_sequence()
-        window.blit(sequence[self.frame], (self.x,self.y))
+        frame = sequence[self.frame]
+        if self.inverted:
+            frame = pygame.transform.flip(frame, True, False)
+        frame = pygame.transform.scale_by(frame, self.scale)
+        window.blit(frame, (self.x,self.y))
         self.advance_frame()
+
+    def hover_check(self, mouse_x, mouse_y):
+        self.hovered = self.obj.rect.collidepoint(mouse_x, mouse_y)
+        return self.hovered
+    
+    def invert_x_axis(self):
+        self.inverted = not(self.inverted)
     
 
 
@@ -186,15 +243,47 @@ class obj(object):
         self.update(x,y)
 
     def update(self, x, y):
+        self.x = x
+        self.y = y
         self.rad = self.width/2
         self.center = [self.x+(self.width/2), self.y+(self.height/2)]
         self.corner = [x+self.width, y+self.height]
         self.circle = circ(self.rad, self.center)
-        self.rect = pygame.Rect(x, y, self.width, self.height)        
+        self.rect = pygame.rect.Rect(x, y, self.width, self.height)
+
+    def dimensions(self, w, h):
+        self.rect = pygame.rect.Rect(self.x, self.y, w, h)
+        self.width = w
+        self.height = h    
 
 
     def asdict(self):
         return {"x": self.x, "y": self.y, "x_tamanho": self.larg, "y_tamanho": self.alt, "collide_method": self.collide_method}
+    
+class path_preview(object):
+    def __init__(self, vet_dir, dist, g, pombo):
+        self.balls = []
+        qnt_balls = (int(dist*0.1)//5)+5
+        vel = vet_dir*dist
+
+        for _ in range(qnt_balls):
+            ball = entidade(0,0,10,10,"rect","path_ball")
+            self.balls.append(ball)
+    
+        for i in range(1,len(self.balls)):
+            b = i+1
+            pos = pombo
+            for _ in range((30//qnt_balls)*b):
+                vel += g
+                pos += vel * 0.2
+            self.balls[i].move(pos[0], pos[1])
+
+        
+    def blit(self, window):
+        for ball in self.balls:
+            ball.blit(window)
+            
+    
     
 # teste = obj(1,2,2,3,"rect")
 # print(teste.asdict()["x"])
