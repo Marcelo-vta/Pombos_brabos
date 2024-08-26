@@ -194,9 +194,9 @@ class fase1():
                     self.pombo.accel += grav
 
                 if self.pombo.action == "flying":
-                    acc_grav = acc_gravitacional(np.array([self.sol.x, self.sol.y]), np.array([self.pombo.x, self.pombo.y]), self.sol.mass, self.pombo.mass)
-                    self.pombo.accel = grav + acc_grav[0]*vetor_direcao(np.array([self.pombo.x, self.pombo.y]), np.array([self.sol.x, self.sol.y]))
-                    self.sol.accel = acc_grav[1]*vetor_direcao(np.array([self.sol.x, self.sol.y]), np.array([self.pombo.x, self.pombo.y]))
+                    acc_grav = acc_gravitacional(np.array(self.sol.obj.center), np.array(self.pombo.obj.center), self.sol.mass, self.pombo.mass)
+                    self.pombo.accel = grav + acc_grav[0]*vetor_direcao(np.array(self.pombo.obj.center), np.array(self.sol.obj.center))
+                    self.sol.accel = acc_grav[1]*vetor_direcao(np.array(self.sol.obj.center), np.array(self.pombo.obj.center))
 
                     if mbd:
                         if self.shit == None:
