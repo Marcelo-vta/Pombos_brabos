@@ -32,7 +32,7 @@ def dist(pos_corpo, pos_personagem):
 
 
 def forca_g(pos_corpo, pos_personagem, m_corpo, m_personagem):
-    return const_G * m_corpo * m_personagem / dist(pos_corpo, pos_personagem)**2
+    return const_G * m_corpo * m_personagem / dist(pos_corpo, pos_personagem)**1.8
 
 
 def acc_gravitacional(pos_corpo, pos_personagem, m_corpo, m_personagem):
