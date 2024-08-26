@@ -22,3 +22,4 @@ humano/hit 5;5;5;5;5;5;5;5;5;5;5;5;5;5;5;5 end 1.3 .png
 mola/idle 1 loop 5 .png
 mola/active 2;2;2;2;2;2 end 5 .png
 wall/idle 1 loop 1.76 .png
+sol/idle 1 loop 1 .png

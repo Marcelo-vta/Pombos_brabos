@@ -2,6 +2,7 @@ import pygame, sys
 from character import entidade, colide, path_preview
 from alglin import *
 import numpy as np
+from instrucoes import Instrucoes
 
 res = (1280,720)
 grav = np.array([0,0.1])
@@ -53,6 +54,8 @@ class fase1():
         self.humano.invert_x_axis()
         self.humano.center(res, [-0.35, -0.33])
 
+        self.sol = entidade(0,0, 20, 20, 'circle', 'sol', mass=10000)
+        self.sol.center(res, [0.0, 0.5])
         self.mola = entidade(0,0,10,10,'rect','mola', mass=100, rot='y', scale=0.8)
         self.mola.center(res, (0,-0.35))
 
@@ -126,8 +129,13 @@ class fase1():
             retomar.blit(self.window)
             recomecar.blit(self.window)
             voltar.blit(self.window)
+
         else:
             if self.landed:
+
+                self.sol.vel = np.array([0.0, 0.0])
+                self.sol.accel = np.array([0.0, 0.0])
+
                 if self.reset:
                     if self.counter >= 2:
                         direct = vetor_direcao(np.array([self.pombo.x, self.pombo.y]), np.array(self.p_initial))
@@ -145,9 +153,9 @@ class fase1():
                     if self.counter >= 3:
                         self.pombo.set_action("idle")
                         if self.pombo.obj.center[0] <= res[0]/2:
-                            self.pombo.vel = np.array([-10,0])
+                            self.pombo.vel = np.array([-10.0,0.0])
                         else:
-                            self.pombo.vel = np.array([10,0])
+                            self.pombo.vel = np.array([10.0,0.0])
                         if not colide(self.pombo.obj, [self.rua.obj]):
                             self.reset = True
                             self.counter = 0
@@ -160,7 +168,7 @@ class fase1():
                     if self.pombo.action == "sitting":
                         if mbd:
                             self.pulling = True
-
+                
                 if self.pulling:
                         
                     self.pombo.set_action("idle")
@@ -186,9 +194,13 @@ class fase1():
                     self.pombo.accel += grav
 
                 if self.pombo.action == "flying":
+                    acc_grav = acc_gravitacional(np.array([self.sol.x, self.sol.y]), np.array([self.pombo.x, self.pombo.y]), self.sol.mass, self.pombo.mass)
+                    self.pombo.accel = grav + acc_grav[0]*vetor_direcao(np.array([self.pombo.x, self.pombo.y]), np.array([self.sol.x, self.sol.y]))
+                    self.sol.accel = acc_grav[1]*vetor_direcao(np.array([self.sol.x, self.sol.y]), np.array([self.pombo.x, self.pombo.y]))
+
                     if mbd:
                         if self.shit == None:
-                            self.shit = entidade(self.pombo.obj.center[0], self.pombo.obj.center[1], 1,1,"rect","bosta", scale=0.6)
+                            self.shit = entidade(self.pombo.obj.center[0], self.pombo.obj.center[1], 1,1, "rect", "bosta", scale=0.6)
                             self.shit.vel += np.array([0,20]) + self.pombo.vel * np.array([1,0])
                             self.shit.accel += grav
                     if colide(self.pombo.obj, [self.wall.obj]):
@@ -224,10 +236,12 @@ class fase1():
                     self.landed = True
                     self.counter = 0
                     self.pombo.set_action("sitting")
-                    self.pombo.vel = np.array([0,0])
-                    self.pombo.accel = np.array([0,0])
+                    self.pombo.vel = np.array([0.0,0.0])
+                    self.pombo.accel = np.array([0.0,0.0])
                 
                 if self.pombo.x > res[0] or self.pombo.x < -self.pombo.width:
+                    self.sol.vel = np.array([0.0, 0.0])
+                    self.sol.accel = np.array([0.0, 0.0])
                     self.landed = True
                     self.reset = True
                     self.counter = 0
@@ -242,38 +256,44 @@ class fase1():
             if self.mola.action == "active" and self.mola.frame >= len(self.mola.find_sequence())-1:
                 self.mola.set_action("idle")
 
-                # V geracao de imagens V
+            # V geracao de imagens V
 
-            if self.pombo.vel[0] < 0:
-                if self.pombo.inverted:
-                    self.pombo.inverted = False
-            else:
-                if not self.pombo.inverted:
-                    self.pombo.inverted = True
+        
+        self.pombo.vel += self.pombo.accel
+        p_coords = np.array([self.pombo.x, self.pombo.y])
+        p_coords += (self.pombo.vel*0.2)
+        self.pombo.move(p_coords[0], p_coords[1])
 
-            text_surface = self.my_font.render(str(""), False, "black")
+        self.sol.vel += self.sol.accel
+        p_coords = np.array([self.sol.x, self.sol.y])
+        p_coords += (self.sol.vel*0.2)
+        self.sol.move(p_coords[0], p_coords[1])
 
+        if self.pombo.vel[0] < 0:
+            if self.pombo.inverted:
+                self.pombo.inverted = False
+        else:
+            if not self.pombo.inverted:
+                self.pombo.inverted = True
 
-            self.pombo.vel += self.pombo.accel
-            p_coords = np.array([self.pombo.x, self.pombo.y])
-            p_coords += (self.pombo.vel*0.2)
-            self.pombo.move(p_coords[0], p_coords[1])
+        text_surface = self.my_font.render(str(""), False, "black")
 
-            self.window.blit(self.background, (0,0))
-            self.rua.blit(self.window)
-            self.poste.blit(self.window)
-            if self.shit != None:
-                self.shit.blit(self.window)
-            if self.path != None:
-                self.path.blit(self.window)
-            self.humano.blit(self.window)
-            self.pombo.blit(self.window)
-            self.mola.blit(self.window)
-            self.wall.blit(self.window)
+        self.window.blit(self.background, (0,0))
+        self.rua.blit(self.window)
+        self.poste.blit(self.window)
+        if self.shit != None:
+            self.shit.blit(self.window)
+        if self.path != None:
+            self.path.blit(self.window)
+        self.humano.blit(self.window)
+        self.pombo.blit(self.window)
+        self.mola.blit(self.window)
+        self.wall.blit(self.window)
+        self.sol.blit(self.window)
             # self.window.blit(text_surface, (20,20))
-            # pygame.draw.rect(self.window, (255,0,0,60), self.mola.obj.rect)
-                # if self.shit != None:
-                #     pygame.draw.rect(self.window, (255,0,0,60), self.shit.obj.rect)
+        # pygame.draw.rect(self.window, (255,0,0,60), self.mola.obj.rect)
+            # if self.shit != None:
+            #     pygame.draw.rect(self.window, (255,0,0,60), self.shit.obj.rect)
             
         # --------------------
 
@@ -364,7 +384,7 @@ class menu():
             self.play_bt.set_action("hover")
             if mbd:
                 state["skin"] = self.pombo.skin
-                return "stage1"
+                return "instrucoes"
         else:
             self.play_bt.set_action("idle")
 
