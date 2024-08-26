@@ -3,6 +3,12 @@ pombo/n/flying 5;5;5 loop 6 .png
 pombo/n/sitting 100;10 loop 6 .png
 play_bt/idle 1 loop 0.6 .png
 play_bt/hover 1 loop 0.6 .png
+retomar/idle 1 loop 0.8 .png
+retomar/hover 1 loop 0.8 .png
+recomecar/idle 1 loop 0.8 .png
+recomecar/hover 1 loop 0.8 .png
+voltar/idle 1 loop 0.8 .png
+voltar/hover 1 loop 0.8 .png
 title/idle 1 loop 0.8 .png
 seta/idle 1 loop 5 .png
 seta/hover 1 loop 5 .png
