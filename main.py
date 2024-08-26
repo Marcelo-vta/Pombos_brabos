@@ -1,9 +1,11 @@
 # Example file showing a basic pygame "game loop"
 import pygame
-from game import menu, fase1
+from pag_menu import Menu
 from load_assets import load_assets
 from character import load_animations, anim_db
 from instrucoes import Instrucoes
+from fase1 import Fase1
+from fase2 import Fase2
 
 
 if __name__ == '__main__':
@@ -21,16 +23,21 @@ if __name__ == '__main__':
     while True:
         if loop != "pass":        
             if loop == "menu":
-                game = menu()
+                game = Menu()
                 game.init(window, state)
                 loop = "pass"
             if loop == "stage1":
-                game = fase1()
+                game = Fase1()
+                game.init(window, state)
+                loop = "pass"
+            if loop == "stage2":
+                game = Fase2()
                 game.init(window, state)
                 loop = "pass"
             if loop == 'instrucoes':
                 game = Instrucoes()
                 game.init(window)
                 loop = "pass"
+
         else:
             loop = game.loop(state)
