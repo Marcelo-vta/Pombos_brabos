@@ -38,6 +38,7 @@ class fase1():
         self.poste = entidade(0,0,10,10,"rect","poste")
 
         self.wall = entidade(0,0,10,10,"rect","wall")
+        self.wall.set_action("4")
 
         self.i = 0
 
@@ -48,7 +49,7 @@ class fase1():
         self.rua.center(res, [0, -0.45])
         self.poste.center(res, [0.35, -0.087])
         self.pombo.center(res, [0.275, 0.11])
-        self.wall.center(res, [0, -0.17])
+        self.wall.center(res, [0, -0.175])
 
         
         self.humano.invert_x_axis()
@@ -286,10 +287,10 @@ class fase1():
             if self.path != None:
                 self.path.blit(self.window)
             self.humano.blit(self.window)
-            self.pombo.blit(self.window)
             self.mola.blit(self.window)
             self.wall.blit(self.window)
             self.sol.blit(self.window)
+            self.pombo.blit(self.window)
             # self.window.blit(text_surface, (20,20))
         # pygame.draw.rect(self.window, (255,0,0,60), self.mola.obj.rect)
             # if self.shit != None:
