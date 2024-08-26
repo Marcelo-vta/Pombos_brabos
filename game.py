@@ -26,7 +26,7 @@ class fase1():
         background = pygame.image.load(r"assets\Title_Image_Day.png")
         self.background = pygame.transform.scale(background, self.window.get_size())
 
-        self.pombo = entidade(0,0,10,10,"rect","pombo", scale=0.6)
+        self.pombo = entidade(0,0,10,10,"rect","pombo", mass=100, scale=0.6)
         self.pombo.change_skin(state["skin"])
         self.pombo.set_action("sitting")
 
@@ -48,6 +48,9 @@ class fase1():
         
         self.humano.invert_x_axis()
         self.humano.center(res, [-0.35, -0.33])
+
+        self.trampolim = entidade(0,0,10,10,'rect','trampolim', mass=100, rot='x', scale=0.8)
+        self.trampolim.center(res)
 
         self.p_initial = self.pombo.x, self.pombo.y
 
@@ -222,7 +225,9 @@ class fase1():
                     self.pombo.move(float(-self.pombo.obj.width), float(-self.pombo.obj.height))
                     self.pombo.set_action("flying")
 
-            # -------------------- 
+        # --------------------
+        if colide(self.pombo.obj, [self.trampolim.obj]):
+            self.pombo.vel = acc_elastica(self.pombo.vel, self.trampolim.rotation)
 
             # V geracao de imagens V
 
@@ -249,7 +254,8 @@ class fase1():
                 self.path.blit(self.window)
             self.humano.blit(self.window)
             self.pombo.blit(self.window)
-            self.window.blit(text_surface, (20,20))
+            self.trampolim.blit(self.window)
+        self.window.blit(text_surface, (20,20))
             # pygame.draw.rect(self.window, (255,0,0,60), self.humano.obj.rect)
             # if self.shit != None:
             #     pygame.draw.rect(self.window, (255,0,0,60), self.shit.obj.rect)
@@ -381,6 +387,5 @@ class menu():
 
         pygame.display.update()
         dt = self.clock.tick(100) / 1000
-        print(dt)
 
         return "pass"

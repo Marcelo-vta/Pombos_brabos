@@ -116,7 +116,7 @@ def colide(objeto, lista_objs):
 # ------------------------------------------------------------------------------------------------------------------------
 
 class entidade(object):
-    def __init__(self, x, y, width, height, collide_method, e_type, scale=1):
+    def __init__(self, x, y, width, height, collide_method, e_type, mass=0, rot='', scale=1):
 
         self.scale = scale
 
@@ -128,12 +128,13 @@ class entidade(object):
         self.y = y
         self.width = width
         self.height = height
+        self.mass = mass
         self.collide_method = collide_method
         self.vel = np.array([0.0,0.0])
         self.accel = np.array([0.0,0.0])
         self.type = e_type
 
-        self.rotation = 0
+        self.rotation = rot
         self.state = 0
         self.collide_list = []
         self.obj = obj(x, y, self.width, self.height, collide_method)

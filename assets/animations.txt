@@ -19,3 +19,4 @@ bosta/hit 3;3;3;3 end 6 .png
 path_ball/idle 1 loop 2 .png
 humano/idle 10;10 loop 1.3 .png
 humano/hit 5;5;5;5;5;5;5;5;5;5;5;5;5;5;5;5 end 1.3 .png
+trampolim/idle 1 loop 0.05 .png
