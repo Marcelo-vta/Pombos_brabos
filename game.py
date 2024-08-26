@@ -30,6 +30,8 @@ class fase1():
         self.pombo.change_skin(state["skin"])
         self.pombo.set_action("sitting")
 
+        self.humano = entidade(0,0,10,10,"rect","humano")
+
         self.rua = entidade(0,0,10,10,"rect","rua")
 
         self.poste = entidade(0,0,10,10,"rect","poste")
@@ -43,6 +45,7 @@ class fase1():
         self.rua.center(res, [0, -0.45])
         self.poste.center(res, [0.35, -0.087])
         self.pombo.center(res, [0.275, 0.11])
+        self.humano.center(res, [-0.35, -0.33])
 
         self.p_initial = self.pombo.x, self.pombo.y
 
@@ -93,6 +96,7 @@ class fase1():
                         self.pombo.vel = np.array([0.0,0.0])
                         self.pombo.accel = np.array([0.0,0.0])
                         self.pombo.move(float(self.p_initial[0]), float(self.p_initial[1]))
+                        self.shit = None
             else:
                 if self.counter >= 3:
                     self.pombo.set_action("idle")
@@ -138,9 +142,10 @@ class fase1():
 
             if self.pombo.action == "flying":
                 if mbd:
-                    self.shit = entidade(self.pombo.obj.center[0], self.pombo.obj.center[1], 1,1,"rect","bosta", scale=0.6)
-                    self.shit.vel += np.array([0,20]) + self.pombo.vel * np.array([1,0])
-                    self.shit.accel += grav
+                    if self.shit == None:
+                        self.shit = entidade(self.pombo.obj.center[0], self.pombo.obj.center[1], 1,1,"rect","bosta", scale=0.6)
+                        self.shit.vel += np.array([0,20]) + self.pombo.vel * np.array([1,0])
+                        self.shit.accel += grav
             
             if self.shit != None:
                 self.shit.vel += self.shit.accel
@@ -148,12 +153,34 @@ class fase1():
                 b_coords += (self.shit.vel*0.2)
                 self.shit.move(b_coords[0], b_coords[1])
 
+                if colide(self.shit.obj, [self.humano.obj]):
+                    self.shit.set_action("hit")
+                    self.shit.vel = np.array([0.0,0.0])
+                    self.shit.accel = np.array([0.0,0.0])
+                    self.humano.set_action("hit")
+                
+                if colide(self.shit.obj, [self.rua.obj]):
+                    self.shit.set_action("hit")
+                    self.shit.vel = np.array([0.0,0.0])
+                    self.shit.accel = np.array([0.0,0.0])
+
+                if self.shit.action == "hit":
+                    if self.shit.frame == 4:
+                        self.shit = None
+
             if self.rua.obj.rect.collidepoint(self.pombo.obj.center[0],self.pombo.obj.center[1]+10):
                 self.landed = True
                 self.counter = 0
                 self.pombo.set_action("sitting")
                 self.pombo.vel = np.array([0,0])
                 self.pombo.accel = np.array([0,0])
+            
+            if self.pombo.x > res[0] or self.pombo.x < -self.pombo.width:
+                self.landed = True
+                self.reset = True
+                self.counter = 0
+                self.pombo.move(float(-self.pombo.obj.width), float(-self.pombo.obj.height))
+                self.pombo.set_action("flying")
 
         # -------------------- 
 
@@ -180,8 +207,12 @@ class fase1():
             self.shit.blit(self.window)
         if self.path != None:
             self.path.blit(self.window)
+        self.humano.blit(self.window)
         self.pombo.blit(self.window)
         self.window.blit(text_surface, (20,20))
+        # pygame.draw.rect(self.window, (255,0,0,60), self.humano.obj.rect)
+        # if self.shit != None:
+        #     pygame.draw.rect(self.window, (255,0,0,60), self.shit.obj.rect)
         
         # --------------------
 

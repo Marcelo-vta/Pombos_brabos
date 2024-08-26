@@ -9,5 +9,7 @@ seta/hover 1 loop 5 .png
 rua/idle 1 loop 1.267 .png
 poste/idle 1 loop 1.267 .png
 bosta/idle 1 loop 6 .png
-bosta/hit 3;3;3 loop 6 .png
+bosta/hit 3;3;3;3 end 6 .png
 path_ball/idle 1 loop 2 .png
+humano/idle 10;10 loop 1.3 .png
+humano/hit 5;5;5;5;5;5;5;5;5;5;5;5;5;5;5;5 end 1.3 .png

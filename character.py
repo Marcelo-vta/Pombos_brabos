@@ -6,11 +6,13 @@ from alglin import *
 #                                                 V papo de animação V
 
 animation_db = {}
+animation_type = {}
 
 def load_animations():
     assets_path = "assets/"
 
     global animation_db 
+    global animation_type
     
     with open(assets_path+"animations.txt") as r:
         animations = r.read().split("\n")
@@ -25,15 +27,21 @@ def load_animations():
         state = inf[0].split('/')[1]
         endcode = inf[4]
         scale = inf[3]
+        a_type = inf[2]
 
         if e_type not in animation_db:
             animation_db[e_type] = {}
+            animation_type[e_type] = {}
+    
+
         if e_type == "pombo":
             state = inf[0].split('/')[2]
             for i in range(9):
                 if str(i) not in animation_db[e_type]:
                     animation_db[e_type][str(i)] = {}
+                    animation_type[e_type][str(i)] = {}
                 animation_db[e_type][str(i)][state] = []
+                animation_type[e_type][str(i)][state] = a_type
                 for j in range(len(frames)):
                     for _ in range(frames[j]):
                         sprite = pygame.image.load(f"{assets_path}{e_type}/{str(i)}/{state}/{str(j)}{endcode}")
@@ -41,6 +49,7 @@ def load_animations():
                         animation_db[e_type][str(i)][state].append(sprite)
         else:
             animation_db[e_type][inf[0].split("/")[1]] = []
+            animation_type[e_type][inf[0].split("/")[1]] = a_type
             for j in range(len(frames)):
                 for _ in range(frames[j]):
                     sprite = pygame.image.load(f"{assets_path}{e_type}/{state}/{str(j)}{endcode}")
@@ -49,6 +58,9 @@ def load_animations():
 
 def anim_db():
     return animation_db
+
+def anim_type():
+    return animation_type
 
 # -----------------------------------------------------------------------------------------------------------------------
 #                                           V Colisãao de objetos V
@@ -133,8 +145,10 @@ class entidade(object):
 
         self.inverted = False
 
+        self.a_type = "loop"
         self.advance_frame(True)
         self.hovered = False
+
 
         pass
 
@@ -142,9 +156,12 @@ class entidade(object):
         global animation_db
 
         busca = animation_db[self.type]
+        a_type = animation_type[self.type]
         if self.type == "pombo":
             busca = busca[str(self.skin)]
-
+            a_type = a_type[str(self.skin)]
+        
+        self.a_type = a_type[self.action]
         return busca[self.action]
     
     def set_frame(self, new_frame):
@@ -154,8 +171,13 @@ class entidade(object):
         sequence = self.find_sequence()
         self.frame += 1
 
+        if self.a_type == "loop":
+            inc = 0
+        else:
+            inc = len(sequence)-1
+
         if self.frame >= len(sequence):
-            self.frame = 0
+            self.frame = inc
 
         frame = sequence[self.frame]
         frame = pygame.transform.scale_by(frame, self.scale)
@@ -211,6 +233,7 @@ class entidade(object):
             frame = pygame.transform.flip(frame, True, False)
         frame = pygame.transform.scale_by(frame, self.scale)
         window.blit(frame, (self.x,self.y))
+
         self.advance_frame()
 
     def hover_check(self, mouse_x, mouse_y):
