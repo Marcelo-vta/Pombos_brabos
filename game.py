@@ -259,37 +259,37 @@ class fase1():
             # V geracao de imagens V
 
         
-        self.pombo.vel += self.pombo.accel
-        p_coords = np.array([self.pombo.x, self.pombo.y])
-        p_coords += (self.pombo.vel*0.2)
-        self.pombo.move(p_coords[0], p_coords[1])
+            self.pombo.vel += self.pombo.accel
+            p_coords = np.array([self.pombo.x, self.pombo.y])
+            p_coords += (self.pombo.vel*0.2)
+            self.pombo.move(p_coords[0], p_coords[1])
 
-        self.sol.vel += self.sol.accel
-        p_coords = np.array([self.sol.x, self.sol.y])
-        p_coords += (self.sol.vel*0.2)
-        self.sol.move(p_coords[0], p_coords[1])
+            self.sol.vel += self.sol.accel
+            p_coords = np.array([self.sol.x, self.sol.y])
+            p_coords += (self.sol.vel*0.2)
+            self.sol.move(p_coords[0], p_coords[1])
 
-        if self.pombo.vel[0] < 0:
-            if self.pombo.inverted:
-                self.pombo.inverted = False
-        else:
-            if not self.pombo.inverted:
-                self.pombo.inverted = True
+            if self.pombo.vel[0] < 0:
+                if self.pombo.inverted:
+                    self.pombo.inverted = False
+            else:
+                if not self.pombo.inverted:
+                    self.pombo.inverted = True
 
-        text_surface = self.my_font.render(str(""), False, "black")
+            text_surface = self.my_font.render(str(""), False, "black")
 
-        self.window.blit(self.background, (0,0))
-        self.rua.blit(self.window)
-        self.poste.blit(self.window)
-        if self.shit != None:
-            self.shit.blit(self.window)
-        if self.path != None:
-            self.path.blit(self.window)
-        self.humano.blit(self.window)
-        self.pombo.blit(self.window)
-        self.mola.blit(self.window)
-        self.wall.blit(self.window)
-        self.sol.blit(self.window)
+            self.window.blit(self.background, (0,0))
+            self.rua.blit(self.window)
+            self.poste.blit(self.window)
+            if self.shit != None:
+                self.shit.blit(self.window)
+            if self.path != None:
+                self.path.blit(self.window)
+            self.humano.blit(self.window)
+            self.pombo.blit(self.window)
+            self.mola.blit(self.window)
+            self.wall.blit(self.window)
+            self.sol.blit(self.window)
             # self.window.blit(text_surface, (20,20))
         # pygame.draw.rect(self.window, (255,0,0,60), self.mola.obj.rect)
             # if self.shit != None:
