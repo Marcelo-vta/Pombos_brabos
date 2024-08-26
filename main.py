@@ -39,13 +39,16 @@ if __name__ == '__main__':
 
     state = {}
 
-    loop = False
-    stages = [menu(), fase1()]
-    i = 0
-
+    loop = "menu"
     while True:
-        if not loop:
-            game = stages[i]
-            game.init(window, state)
-            i += 1
-        loop = game.loop(state)
+        if loop != "pass":        
+            if loop == "menu":
+                game = menu()
+                game.init(window, state)
+                loop = "pass"
+            if loop == "stage1":
+                game = fase1()
+                game.init(window, state)
+                loop = "pass"
+        else:
+            loop = game.loop(state)
