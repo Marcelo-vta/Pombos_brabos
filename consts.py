@@ -1,4 +1,4 @@
-from numpy import np
+import numpy as np
 
 const_G = 6.674 * 0.1
 
