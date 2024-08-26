@@ -190,7 +190,7 @@ class entidade(object):
         if frame.get_height != self.height:
             self.height = frame.get_height()
             changed = True
-
+        
         if changed:
             self.obj.dimensions(self.width, self.height)
 

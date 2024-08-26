@@ -36,6 +36,8 @@ class fase1():
 
         self.poste = entidade(0,0,10,10,"rect","poste")
 
+        self.wall = entidade(0,0,10,10,"rect","wall")
+
         self.i = 0
 
         self.entidades = []
@@ -45,12 +47,14 @@ class fase1():
         self.rua.center(res, [0, -0.45])
         self.poste.center(res, [0.35, -0.087])
         self.pombo.center(res, [0.275, 0.11])
+        self.wall.center(res, [0, -0.17])
+
         
         self.humano.invert_x_axis()
         self.humano.center(res, [-0.35, -0.33])
 
-        self.trampolim = entidade(0,0,10,10,'rect','trampolim', mass=100, rot='x', scale=0.8)
-        self.trampolim.center(res)
+        self.mola = entidade(0,0,10,10,'rect','mola', mass=100, rot='y', scale=0.8)
+        self.mola.center(res, (0,-0.35))
 
         self.p_initial = self.pombo.x, self.pombo.y
 
@@ -157,8 +161,6 @@ class fase1():
                         if mbd:
                             self.pulling = True
 
-                    
-                
                 if self.pulling:
                         
                     self.pombo.set_action("idle")
@@ -189,6 +191,13 @@ class fase1():
                             self.shit = entidade(self.pombo.obj.center[0], self.pombo.obj.center[1], 1,1,"rect","bosta", scale=0.6)
                             self.shit.vel += np.array([0,20]) + self.pombo.vel * np.array([1,0])
                             self.shit.accel += grav
+                    if colide(self.pombo.obj, [self.wall.obj]):
+                        self.landed = True
+                        self.reset = True
+                        self.counter = 2
+                        self.pombo.accel = np.array([0.0,0.0])
+                        self.pombo.vel = np.array([0.0,0.0])
+                        
                 
                 if self.shit != None:
                     self.shit.vel += self.shit.accel
@@ -226,15 +235,14 @@ class fase1():
                     self.pombo.set_action("flying")
 
         # --------------------
-        if colide(self.pombo.obj, [self.trampolim.obj]):
-            self.pombo.vel = acc_elastica(self.pombo.vel, self.trampolim.rotation)
+            if colide(self.pombo.obj, [self.mola.obj]) and self.mola.action == "idle":
+                self.pombo.vel = acc_elastica(self.pombo.vel, self.mola.rotation)
+                self.mola.set_action("active")
+                
+            if self.mola.action == "active" and self.mola.frame >= len(self.mola.find_sequence())-1:
+                self.mola.set_action("idle")
 
-            # V geracao de imagens V
-
-            self.pombo.vel += self.pombo.accel
-            p_coords = np.array([self.pombo.x, self.pombo.y])
-            p_coords += (self.pombo.vel*0.2)
-            self.pombo.move(p_coords[0], p_coords[1])
+                # V geracao de imagens V
 
             if self.pombo.vel[0] < 0:
                 if self.pombo.inverted:
@@ -245,6 +253,12 @@ class fase1():
 
             text_surface = self.my_font.render(str(""), False, "black")
 
+
+            self.pombo.vel += self.pombo.accel
+            p_coords = np.array([self.pombo.x, self.pombo.y])
+            p_coords += (self.pombo.vel*0.2)
+            self.pombo.move(p_coords[0], p_coords[1])
+
             self.window.blit(self.background, (0,0))
             self.rua.blit(self.window)
             self.poste.blit(self.window)
@@ -254,11 +268,12 @@ class fase1():
                 self.path.blit(self.window)
             self.humano.blit(self.window)
             self.pombo.blit(self.window)
-            self.trampolim.blit(self.window)
-        self.window.blit(text_surface, (20,20))
-            # pygame.draw.rect(self.window, (255,0,0,60), self.humano.obj.rect)
-            # if self.shit != None:
-            #     pygame.draw.rect(self.window, (255,0,0,60), self.shit.obj.rect)
+            self.mola.blit(self.window)
+            self.wall.blit(self.window)
+            # self.window.blit(text_surface, (20,20))
+            # pygame.draw.rect(self.window, (255,0,0,60), self.mola.obj.rect)
+                # if self.shit != None:
+                #     pygame.draw.rect(self.window, (255,0,0,60), self.shit.obj.rect)
             
         # --------------------
 

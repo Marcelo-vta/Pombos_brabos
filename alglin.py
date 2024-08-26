@@ -53,7 +53,7 @@ def acc_elastica(v_personagem, rot_trampolim):
     Aceleração do personagem
     """
     if rot_trampolim == 'x':
-        return v_personagem * np.array([-1.0, 0])
+        return v_personagem * np.array([-1.0, 1.0])
     elif rot_trampolim == 'y':
         return v_personagem * np.array([1.0, -1.0])
 

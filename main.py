@@ -33,7 +33,8 @@ if __name__ == '__main__':
     pygame.init()
 
     # window = pygame.display.set_mode((1900, 1080), pygame.FULLSCREEN)
-    window = pygame.display.set_mode((1280,720), pygame.FULLSCREEN)
+    # window = pygame.display.set_mode((1280,720), pygame.FULLSCREEN)
+    window = pygame.display.set_mode((1280,720))
     load_animations()
     anim_db()
 
