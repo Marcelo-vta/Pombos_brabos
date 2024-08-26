@@ -7,7 +7,10 @@ def vetor_direcao(pos_inicial, pos_final = None):
 
     Retorna: Vetor normalizado
     """
-    v = pos_final - pos_inicial if pos_final.any() != None else pos_inicial
+    try:
+        v = pos_final - pos_inicial if pos_final.any() != None else pos_inicial
+    except AttributeError:
+        v = pos_final - pos_inicial if pos_final != None else pos_inicial
     return np.array((1/np.linalg.norm(v)) * v)
 
 
@@ -42,26 +45,17 @@ def acc_gravitacional(pos_corpo, pos_personagem, m_corpo, m_personagem):
     f = forca_g(pos_corpo, pos_personagem, m_corpo, m_personagem)
     return f/m_personagem, f/m_corpo
 
-def deformacao_elastica(massa_personagem, acc_personagem, k):
-    """
-    Deformação elástica é a aceleração do personagem dividida pela constante elástica.
-
-    - acc_personagem deve ser do tipo np.array ou int/float.
-
-    Retorna:
-    Deformação elástica
-    """
-    return acc_personagem*massa_personagem/k
-
-def acc_elastica(massa_personagem, acc_personagem, k):
+def acc_elastica(v_personagem, rot_trampolim):
     """
     Aceleração do corpo é a força entre os corpos dividido pela massa do corpo sendo acelerado.
 
     Retorna:
     Aceleração do personagem
     """
-
-    return k*deformacao_elastica(massa_personagem, acc_personagem, k)/massa_personagem
+    if rot_trampolim == 'x':
+        return v_personagem * np.array([-1.0, 0])
+    elif rot_trampolim == 'y':
+        return v_personagem * np.array([1.0, -1.0])
 
 
 def vetor_aceleracao(pos_inicial, pos_final, acc):

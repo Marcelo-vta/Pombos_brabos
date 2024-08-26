@@ -26,7 +26,7 @@ class fase1():
         background = pygame.image.load(r"assets\Title_Image_Day.png")
         self.background = pygame.transform.scale(background, self.window.get_size())
 
-        self.pombo = entidade(0,0,10,10,"rect","pombo", scale=0.6)
+        self.pombo = entidade(0,0,10,10,"rect","pombo", mass=100, scale=0.6)
         self.pombo.change_skin(state["skin"])
         self.pombo.set_action("sitting")
 
@@ -43,6 +43,9 @@ class fase1():
         self.rua.center(res, [0, -0.45])
         self.poste.center(res, [0.35, -0.087])
         self.pombo.center(res, [0.275, 0.11])
+
+        self.trampolim = entidade(0,0,10,10,'rect','trampolim', mass=100, rot='x', scale=0.8)
+        self.trampolim.center(res)
 
         self.p_initial = self.pombo.x, self.pombo.y
 
@@ -155,7 +158,9 @@ class fase1():
                 self.pombo.vel = np.array([0,0])
                 self.pombo.accel = np.array([0,0])
 
-        # -------------------- 
+        # --------------------
+        if colide(self.pombo.obj, [self.trampolim.obj]):
+            self.pombo.vel = acc_elastica(self.pombo.vel, self.trampolim.rotation)
 
         # V geracao de imagens V
 
@@ -181,6 +186,7 @@ class fase1():
         if self.path != None:
             self.path.blit(self.window)
         self.pombo.blit(self.window)
+        self.trampolim.blit(self.window)
         self.window.blit(text_surface, (20,20))
         
         # --------------------
@@ -310,6 +316,5 @@ class menu():
 
         pygame.display.update()
         dt = self.clock.tick(100) / 1000
-        print(dt)
 
         return True

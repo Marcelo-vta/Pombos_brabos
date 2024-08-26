@@ -11,3 +11,4 @@ poste/idle 1 loop 1.267 .png
 bosta/idle 1 loop 6 .png
 bosta/hit 3;3;3 loop 6 .png
 path_ball/idle 1 loop 2 .png
+trampolim/idle 1 loop 0.05 .png
