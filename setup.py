@@ -31,6 +31,6 @@ setup(
     ],
     include_package_data=True,
     package_data={
-        '': ['assets/*']  # Incluir todos os arquivos da pasta assets
+        '': ['assets/**/*']  # Incluir todos os arquivos da pasta assets
     },
 )
