@@ -9,7 +9,7 @@ animation_db = {}
 animation_type = {}
 
 def load_animations():
-    assets_path = "Pombos_brabos/assets/"
+    assets_path = "assets/"
 
     global animation_db 
     global animation_type
@@ -22,7 +22,6 @@ def load_animations():
 
     for inf in animations:
         e_type = inf[0].split("/")[0]
-        print(inf)
         frames = [int(i) for i in inf[1].split(";")]
         state = inf[0].split('/')[1]
         endcode = inf[4]

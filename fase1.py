@@ -21,7 +21,7 @@ class Fase1():
 
         self.clock = pygame.time.Clock()
 
-        background = pygame.image.load(r"Pombos_brabos/assets/Title_Image_Day.png")
+        background = pygame.image.load(r"assets/Title_Image_Day.png")
         self.background = pygame.transform.scale(background, self.window.get_size())
 
         self.pombo = entidade(0,0,10,10,"rect","pombo", mass=100, scale=0.6)
@@ -299,7 +299,6 @@ class Fase1():
             #     pygame.draw.rect(self.window, (255,0,0,60), self.shit.obj.rect)
             
         # --------------------
-        print(self.endcounter)
         pygame.display.update()
         dt = self.clock.tick(60)/1000
         self.counter += dt
