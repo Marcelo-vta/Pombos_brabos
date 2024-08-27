@@ -1,6 +1,6 @@
 import pygame
 import numpy as np
-from alglin import *
+from Pombos_brabos.alglin import *
 
 # -----------------------------------------------------------------------------------------------------------------------
 #                                                 V papo de animação V

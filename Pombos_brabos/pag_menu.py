@@ -1,6 +1,6 @@
 import pygame, sys
 from character import entidade
-from alglin import *
+from Pombos_brabos.alglin import *
 from consts import res
 
 class Menu():
