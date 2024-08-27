@@ -9,7 +9,7 @@ animation_db = {}
 animation_type = {}
 
 def load_animations():
-    assets_path = "Pombos_brabos/assets/"
+    assets_path = "assets/"
 
     global animation_db 
     global animation_type
