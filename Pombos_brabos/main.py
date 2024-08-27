@@ -1,11 +1,11 @@
 # Example file showing a basic pygame "game loop"
 import pygame
 from Pombos_brabos.pag_menu import Menu
-from character import load_animations, anim_db
-from instrucoes import Instrucoes
-from fase1 import Fase1
-from fase2 import Fase2
-from end import end
+from Pombos_brabos.character import load_animations, anim_db
+from Pombos_brabos.instrucoes import Instrucoes
+from Pombos_brabos.fase1 import Fase1
+from Pombos_brabos.fase2 import Fase2
+from Pombos_brabos.end import end
 
 def main():
     pygame.init()
