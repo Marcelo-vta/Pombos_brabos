@@ -5,6 +5,7 @@ from character import load_animations, anim_db
 from instrucoes import Instrucoes
 from fase1 import Fase1
 from fase2 import Fase2
+from end import end
 
 
 if __name__ == '__main__':
@@ -36,6 +37,10 @@ if __name__ == '__main__':
             if loop == 'instrucoes':
                 game = Instrucoes()
                 game.init(window)
+                loop = "pass"
+            if loop == 'end':
+                game = end()
+                game.init(window,state)
                 loop = "pass"
 
         else:

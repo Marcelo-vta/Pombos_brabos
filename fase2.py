@@ -143,7 +143,7 @@ class Fase2():
 
         else:
             if self.endcounter >= 11:
-                return "stage2"
+                return "end"
             if self.landed:
 
                 if self.reset:
