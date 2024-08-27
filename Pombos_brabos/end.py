@@ -1,5 +1,6 @@
 import pygame
 import sys
+from Pombos_brabos.consts import title_image_day
 
 class end():
     def init(self, window, state):
@@ -14,7 +15,7 @@ class end():
 
         self.clock = pygame.time.Clock()
 
-        background = pygame.image.load(r"Pombos_brabos/assets/end.png")
+        background = pygame.image.load(title_image_day)
         self.background = pygame.transform.scale(background, self.window.get_size())
     
     def loop(self, state):

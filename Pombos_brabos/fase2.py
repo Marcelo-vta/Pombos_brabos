@@ -2,7 +2,7 @@ import pygame, sys
 from Pombos_brabos.character import entidade, colide, path_preview
 from Pombos_brabos.alglin import *
 import numpy as np
-from Pombos_brabos.consts import res, grav
+from Pombos_brabos.consts import res, grav, title_image_day
 
 class Fase2():
     def init(self, window, state):
@@ -21,7 +21,7 @@ class Fase2():
 
         self.clock = pygame.time.Clock()
 
-        background = pygame.image.load(r"assets/Title_Image_Day.png")
+        background = pygame.image.load(title_image_day)
         self.background = pygame.transform.scale(background, self.window.get_size())
 
         self.pombo = entidade(0,0,10,10,"rect","pombo", mass=100, scale=0.6)

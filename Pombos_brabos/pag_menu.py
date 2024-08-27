@@ -1,7 +1,7 @@
 import pygame, sys
 from Pombos_brabos.character import entidade
 from Pombos_brabos.alglin import *
-from Pombos_brabos.consts import res
+from Pombos_brabos.consts import res, title_image_day
 
 class Menu():
     def init(self, window, state):
@@ -16,7 +16,7 @@ class Menu():
 
         self.clock = pygame.time.Clock()
 
-        background = pygame.image.load(r"assets/Title_Image_Day.png")
+        background = pygame.image.load(title_image_day)
         self.background = pygame.transform.scale(background, self.window.get_size())
         
         self.window.fill("grey")
