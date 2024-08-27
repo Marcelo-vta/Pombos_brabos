@@ -1,4 +1,4 @@
-import pygame
+import pygame, os
 import numpy as np
 from Pombos_brabos.alglin import *
 
@@ -9,7 +9,7 @@ animation_db = {}
 animation_type = {}
 
 def load_animations():
-    assets_path = "assets/"
+    assets_path = f"{os.getcwd()}/assets/"
 
     global animation_db 
     global animation_type
