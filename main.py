@@ -7,8 +7,11 @@ from fase1 import Fase1
 from fase2 import Fase2
 from end import end
 
-def main():
+if __name__ == '__main__':
     pygame.init()
+
+    # window = pygame.display.set_mode((1900, 1080), pygame.FULLSCREEN)
+    # window = pygame.display.set_mode((1280,720), pygame.FULLSCREEN)
     window = pygame.display.set_mode((1280,720))
     load_animations()
     anim_db()
@@ -41,6 +44,3 @@ def main():
 
         else:
             loop = game.loop(state)
-
-if __name__ == '__main__':
-    main()
