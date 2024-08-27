@@ -7,7 +7,7 @@ from fase1 import Fase1
 from fase2 import Fase2
 from end import end
 
-if __name__ == '__main__':
+def main():
     pygame.init()
 
     # window = pygame.display.set_mode((1900, 1080), pygame.FULLSCREEN)

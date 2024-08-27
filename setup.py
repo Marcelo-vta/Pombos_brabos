@@ -22,8 +22,11 @@ setup(
     python_requires='>=3.11',
     entry_points={
         'console_scripts': [
-            'marcelo_Pombos_brabos=Pombos_brabos.main:main',
+            'marcelo_pombos_brabos=Pombos_brabos.main:main',
         ],
     },
-    install_requires=[line.strip() for line in open("requirements.txt", "r", encoding="utf-8").readlines()]
+
+    install_requires=[  # Instala as dependências especificadas no requirements.txt
+        line.strip() for line in open("requirements.txt").readlines()
+    ],
 )
