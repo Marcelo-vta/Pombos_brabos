@@ -4,7 +4,7 @@ from alglin import *
 import numpy as np
 from consts import res, grav
 
-class Fase2():
+class Fase3():
     def init(self, window, state):
         """
         Inicializa todas as informações e objetos do jogo.

@@ -71,6 +71,8 @@ class Fase1():
         self.landed = False
         self.reset = False
         self.counter = 0
+        self.end = False
+        self.endcounter = -1
 
         self.paused = False
 
@@ -129,6 +131,8 @@ class Fase1():
             voltar.blit(self.window)
 
         else:
+            if self.endcounter >= 8:
+                return "stage2"
             if self.landed:
 
                 self.sol.vel = np.array([0.0, 0.0])
@@ -220,6 +224,7 @@ class Fase1():
                         self.shit.vel = np.array([0.0,0.0])
                         self.shit.accel = np.array([0.0,0.0])
                         self.humano.set_action("hit")
+                        self.endcounter += 1
                     
                     if colide(self.shit.obj, [self.rua.obj]):
                         self.shit.set_action("hit")
@@ -294,10 +299,12 @@ class Fase1():
             #     pygame.draw.rect(self.window, (255,0,0,60), self.shit.obj.rect)
             
         # --------------------
-
+        print(self.endcounter)
         pygame.display.update()
         dt = self.clock.tick(60)/1000
         self.counter += dt
+        if self.endcounter >= 0:
+            self.endcounter += dt
 
 
         self.i += 1
