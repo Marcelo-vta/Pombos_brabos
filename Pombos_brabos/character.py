@@ -9,7 +9,7 @@ animation_db = {}
 animation_type = {}
 
 def load_animations():
-    assets_path = f"{os.getcwd()}/assets/"
+    assets_path = f"{os.getcwd()}\\assets\\"
 
     global animation_db 
     global animation_type
