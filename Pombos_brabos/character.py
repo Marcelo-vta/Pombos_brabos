@@ -1,6 +1,7 @@
 import pygame, os
 import numpy as np
 from Pombos_brabos.alglin import *
+from Pombos_brabos.consts import get_asset_path
 
 # -----------------------------------------------------------------------------------------------------------------------
 #                                                 V papo de animação V
@@ -9,7 +10,7 @@ animation_db = {}
 animation_type = {}
 
 def load_animations():
-    assets_path = f"{os.getcwd()}\\assets\\"
+    assets_path = get_asset_path("assets/")
 
     global animation_db 
     global animation_type
