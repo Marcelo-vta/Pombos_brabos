@@ -1,5 +1,5 @@
 import numpy as np
-from consts import const_G
+from Pombos_brabos.consts import const_G
 
 def vetor_direcao(pos_inicial, pos_final = None):
     """

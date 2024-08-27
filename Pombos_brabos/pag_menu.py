@@ -1,7 +1,7 @@
 import pygame, sys
-from character import entidade
+from Pombos_brabos.character import entidade
 from Pombos_brabos.alglin import *
-from consts import res
+from Pombos_brabos.consts import res
 
 class Menu():
     def init(self, window, state):

@@ -1,8 +1,8 @@
 import pygame, sys
-from character import entidade, colide, path_preview
+from Pombos_brabos.character import entidade, colide, path_preview
 from Pombos_brabos.alglin import *
 import numpy as np
-from consts import res, grav
+from Pombos_brabos.consts import res, grav
 
 class Fase1():
     def init(self, window, state):
