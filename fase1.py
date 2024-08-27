@@ -21,7 +21,7 @@ class Fase1():
 
         self.clock = pygame.time.Clock()
 
-        background = pygame.image.load(r"assets\Title_Image_Day.png")
+        background = pygame.image.load(r"Pombos_brabos/assets/Title_Image_Day.png")
         self.background = pygame.transform.scale(background, self.window.get_size())
 
         self.pombo = entidade(0,0,10,10,"rect","pombo", mass=100, scale=0.6)
@@ -131,7 +131,7 @@ class Fase1():
             voltar.blit(self.window)
 
         else:
-            if self.endcounter >= 8:
+            if self.endcounter >= 6.5:
                 return "stage2"
             if self.landed:
 

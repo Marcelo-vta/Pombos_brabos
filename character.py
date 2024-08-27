@@ -9,7 +9,7 @@ animation_db = {}
 animation_type = {}
 
 def load_animations():
-    assets_path = "assets/"
+    assets_path = "Pombos_brabos/assets/"
 
     global animation_db 
     global animation_type
@@ -135,9 +135,11 @@ class entidade(object):
         self.type = e_type
 
         self.rotation = rot
+        self.angle = 0
         self.state = 0
         self.collide_list = []
         self.obj = obj(x, y, self.width, self.height, collide_method)
+        self.rotated = False
 
         self.action = "idle"
         self.frame = 0
@@ -145,6 +147,7 @@ class entidade(object):
         self.skin = 0
 
         self.inverted = False
+        self.inverted_y = False
 
         self.a_type = "loop"
         self.advance_frame(True)
@@ -232,6 +235,10 @@ class entidade(object):
         frame = sequence[self.frame]
         if self.inverted:
             frame = pygame.transform.flip(frame, True, False)
+        if self.inverted_y:
+            frame = pygame.transform.flip(frame, False, True)
+        if self.angle:
+            frame = pygame.transform.rotate(frame, self.angle)
         frame = pygame.transform.scale_by(frame, self.scale)
         window.blit(frame, (self.x,self.y))
 
@@ -243,6 +250,12 @@ class entidade(object):
     
     def invert_x_axis(self):
         self.inverted = not(self.inverted)
+
+    def invert_y_axis(self):
+        self.inverted_y = not(self.inverted_y)
+
+    def rotate_sprite(self, angle):
+        self.angle = angle
     
 
 

@@ -16,7 +16,7 @@ class Menu():
 
         self.clock = pygame.time.Clock()
 
-        background = pygame.image.load(r"assets\Title_Image_Day.png")
+        background = pygame.image.load(r"Pombos_brabos/assets/Title_Image_Day.png")
         self.background = pygame.transform.scale(background, self.window.get_size())
         
         self.window.fill("grey")

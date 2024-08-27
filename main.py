@@ -1,7 +1,6 @@
 # Example file showing a basic pygame "game loop"
 import pygame
 from pag_menu import Menu
-from load_assets import load_assets
 from character import load_animations, anim_db
 from instrucoes import Instrucoes
 from fase1 import Fase1
