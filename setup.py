@@ -22,11 +22,8 @@ setup(
     python_requires='>=3.11',
     entry_points={
         'console_scripts': [
-            'tiago_hello_world=hello_world.main:main',
+            'marcelo_Pombos_brabos=Pombos_brabos.main:main',
         ],
     },
-
-    install_requires=[  # Instala as dependências especificadas no requirements.txt
-        line.strip() for line in open("requirements.txt").readlines()
-    ],
+    install_requires=[line.strip() for line in open("requirements.txt", "r", encoding="utf-8").readlines()]
 )
